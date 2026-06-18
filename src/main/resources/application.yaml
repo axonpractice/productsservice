@@ -9,3 +9,6 @@ eureka:
     instance-id: ${spring.application.name}:${instanceId:${random.value}}
 server:
   port: 0
+logger:
+  level:
+    root: TRACE
