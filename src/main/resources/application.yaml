@@ -27,6 +27,11 @@ server:
   error:
     include-message: always
     include-binding-errors: always
+axon:
+  eventhandling:
+    processors:
+      product-group:
+        mode: subscribing
 #logging:
 #  level:
 #    root: TRACE
