@@ -1,4 +1,4 @@
-package com.adedev.estore.productsservice.query;
+package com.adedev.estore.productsservice;
 
 import com.adedev.estore.productsservice.core.data.ProductEntity;
 import com.adedev.estore.productsservice.core.data.ProductRepository;

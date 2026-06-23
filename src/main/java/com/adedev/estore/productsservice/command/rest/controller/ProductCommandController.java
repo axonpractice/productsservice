@@ -1,7 +1,8 @@
-package com.adedev.estore.productsservice.rest.controller;
+package com.adedev.estore.productsservice.command.rest.controller;
 
 import com.adedev.estore.productsservice.command.CreateProductCommand;
-import com.adedev.estore.productsservice.rest.model.CreateProductRestModel;
+import com.adedev.estore.productsservice.command.rest.model.CreateProductRestModel;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.core.env.Environment;
@@ -18,14 +19,14 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/products")
-public class ProductController {
+public class ProductCommandController {
 
     private final CommandGateway commandGateway;
 
     private final Environment environment;
 
     @PostMapping
-    public String createProduct(@RequestBody CreateProductRestModel product) {
+    public String createProduct(@RequestBody @Valid CreateProductRestModel product) {
         var createProductCommand = CreateProductCommand.builder()
                 .title(product.getTitle())
                 .price(product.getPrice())
@@ -41,11 +42,6 @@ public class ProductController {
             return e.getMessage();
         }
 
-    }
-
-    @GetMapping
-    public String getProduct() {
-        return "HTTP GET handled " + environment.getProperty("local.server.port");
     }
 
     @PutMapping

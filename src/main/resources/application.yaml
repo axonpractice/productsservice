@@ -24,6 +24,9 @@ eureka:
     instance-id: ${spring.application.name}:${instanceId:${random.value}}
 server:
   port: 0
+  error:
+    include-message: always
+    include-binding-errors: always
 #logging:
 #  level:
 #    root: TRACE
