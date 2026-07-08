@@ -36,11 +36,7 @@ public class ProductCommandController {
 
         String returnValue;
 
-        try {
-            return commandGateway.sendAndWait(createProductCommand);
-        } catch (Exception e) {
-            return e.getMessage();
-        }
+        return commandGateway.sendAndWait(createProductCommand);
 
     }
 
