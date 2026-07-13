@@ -2,7 +2,6 @@ package com.adedev.estore.productsservice.command.rest.model;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.math.BigDecimal;

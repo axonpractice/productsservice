@@ -1,5 +1,6 @@
-package com.adedev.estore.productsservice;
+package com.adedev.estore.productsservice.command;
 
+import com.adedev.core.event.ProductReservedEvent;
 import com.adedev.estore.productsservice.core.data.ProductEntity;
 import com.adedev.estore.productsservice.core.data.ProductRepository;
 import com.adedev.estore.productsservice.core.event.ProductCreatedEvent;
@@ -44,5 +45,12 @@ public class ProductEventHandler {
 
 //        //Wrapped in CommandExecutionException
 //        throw new Exception("Test exception");
+    }
+
+    @EventHandler
+    protected void on(ProductReservedEvent productReservedEvent) {
+        var product = productRepository.findByProductId(productReservedEvent.getProductId());
+        product.setQuantity(productReservedEvent.getQuantity());
+        productRepository.save(product);
     }
 }

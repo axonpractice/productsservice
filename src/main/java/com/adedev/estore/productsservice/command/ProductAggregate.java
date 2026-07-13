@@ -1,5 +1,7 @@
 package com.adedev.estore.productsservice.command;
 
+import com.adedev.core.command.ReserveProductCommand;
+import com.adedev.core.event.ProductReservedEvent;
 import com.adedev.estore.productsservice.core.event.ProductCreatedEvent;
 import lombok.NoArgsConstructor;
 import lombok.extern.java.Log;
@@ -47,6 +49,23 @@ public class ProductAggregate {
         AggregateLifecycle.apply(productCreatedEvent);
     }
 
+    @CommandHandler
+    public void handle(ReserveProductCommand reserveProductCommand) {
+        log.info("Handling ReserveProductCommand for productId: " + this.productId);
+        if (quantity < reserveProductCommand.getQuantity()) {
+            throw new IllegalArgumentException("Not sufficient items in stock.");
+        }
+
+        ProductReservedEvent productReservedEvent = ProductReservedEvent.builder()
+                .productId(reserveProductCommand.getProductId())
+                .orderId(reserveProductCommand.getOrderId())
+                .quantity(reserveProductCommand.getQuantity())
+                .userId(reserveProductCommand.getUserId())
+                .build();
+
+        AggregateLifecycle.apply(productReservedEvent);
+    }
+
     @EventSourcingHandler
     public void on(ProductCreatedEvent productCreatedEvent) {
         log.info("ProductCreatedEvent triggered.");
@@ -54,5 +73,11 @@ public class ProductAggregate {
         this.price = productCreatedEvent.getPrice();
         this.title = productCreatedEvent.getTitle();
         this.quantity = productCreatedEvent.getQuantity();
+    }
+
+    @EventSourcingHandler
+    public void on(ProductReservedEvent productReservedEvent) {
+        log.info("Handling ProductReservedEvent for productId: " + this.productId);
+        this.quantity = this.quantity - productReservedEvent.getQuantity();
     }
 }

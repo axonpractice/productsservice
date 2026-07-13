@@ -1,5 +1,6 @@
 package com.adedev.estore.productsservice.config;
 
+import com.thoughtworks.xstream.XStream;
 import org.axonframework.common.jpa.EntityManagerProvider;
 import org.axonframework.eventhandling.tokenstore.jpa.JpaTokenStore;
 import org.axonframework.serialization.Serializer;
@@ -15,5 +16,13 @@ public class AxonConfiguration {
                 .entityManagerProvider(entityManagerProvider)
                 .serializer(serializer)
                 .build();
+    }
+
+    @Bean
+    public XStream xStream() {
+        XStream xStream = new XStream();
+        xStream.allowTypesByWildcard(new String[] {"com.adedev.core.command**",
+                "com.adedev.estore.productsservice.core.event.**" });
+        return xStream;
     }
 }

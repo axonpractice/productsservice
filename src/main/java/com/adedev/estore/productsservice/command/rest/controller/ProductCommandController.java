@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,8 +22,6 @@ public class ProductCommandController {
 
     private final CommandGateway commandGateway;
 
-    private final Environment environment;
-
     @PostMapping
     public String createProduct(@RequestBody @Valid CreateProductRestModel product) {
         var createProductCommand = CreateProductCommand.builder()
@@ -33,8 +30,6 @@ public class ProductCommandController {
                 .quantity(product.getQuantity())
                 .productId(UUID.randomUUID().toString())
                 .build();
-
-        String returnValue;
 
         return commandGateway.sendAndWait(createProductCommand);
 
